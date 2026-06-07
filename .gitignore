@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*_executed_check.ipynb
+outputs_manifest/
+outputs_landmarks/
+outputs_overlay/
+outputs_qc/
+outputs_features/
+outputs_stats/
+logs/
+data/images_analysis/
+models/*.task
