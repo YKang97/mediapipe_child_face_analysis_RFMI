@@ -1,6 +1,11 @@
 # Demo Outputs
 
-This folder contains static demonstration outputs generated from the synthetic open-eye example image. These files are included so that readers can preview the expected notebook outputs directly from the repository README.
+This folder contains static demonstration outputs generated from the synthetic open-eye example image. These files are included so that readers can preview the expected notebook outputs directly from the repository README. They are demonstration artifacts only and are not participant data, clinical measurements, or population-level study estimates.
+
+## Reviewer documentation
+
+- `methods_rfmi.md`: RFMI formulas, MediaPipe landmark indices, exported coordinate fields, blendshape fields, and interpretation limits.
+- `reproducibility.md`: public-release scope, environment notes, expected generated outputs, and validation checklist.
 
 ## Figures
 
@@ -17,4 +22,4 @@ This folder contains static demonstration outputs generated from the synthetic o
 - `tables/demo_rfmi_subject_indices.csv`: one-row subject-level RFMI output from the synthetic example.
 - `tables/demo_rfmi_summary.csv`: descriptive RFMI summary table from the synthetic example.
 
-These files are demonstration outputs only. They are not study data.
+These files are demonstration outputs only. They are not study data. Because they come from one synthetic image, summary statistics demonstrate table structure only and should not be interpreted as research estimates.
