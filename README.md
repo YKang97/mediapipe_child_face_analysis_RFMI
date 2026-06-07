@@ -4,6 +4,18 @@ This repository provides a six-part Jupyter demonstration for converting an open
 
 The repository is designed as the public code companion for a pilot feasibility study on distance-uncalibrated child frontal facial photographs. It uses one synthetic open-eye child facial image for demonstration only. No real child participant photographs, participant metadata, or study-level scoring records are included.
 
+## Reviewer-Facing Public-Release Notes
+
+This repository is intended to be reviewed as a transparent computational demo rather than as a release of participant-level research data. To make the public version auditable:
+
+- the MediaPipe model URL and SHA256 hash are fixed in the preparation script;
+- all overlay points and RFMI distance lines are generated from exported MediaPipe Face Landmarker coordinates;
+- RFMI variables are study-defined relative image indices, not centimeter measurements and not official MediaPipe medical measurements;
+- static preview figures and CSV tables are included only to show expected output structure from the synthetic image;
+- real child facial images require ethics approval, consent, privacy protection, and data-governance review before processing or sharing.
+
+Additional reviewer-oriented details are provided in [`docs/methods_rfmi.md`](docs/methods_rfmi.md) and [`docs/reproducibility.md`](docs/reproducibility.md).
+
 ## Six-Part Workflow Preview
 
 The notebook is organized so that reviewers can see, step by step, what the code does and what each step produces.
@@ -67,8 +79,12 @@ The points and lines shown in the overlay figures are generated from MediaPipe l
 │   ├── 01_prepare_project.py
 │   ├── 02_detect_and_overlay.py
 │   ├── 04_compute_rfmi.py
-│   └── 05_summarize_rfmi.py
+│   ├── 05_summarize_rfmi.py
+│   └── 06_validate_public_demo.py
 └── docs/
+    ├── README.md
+    ├── methods_rfmi.md
+    ├── reproducibility.md
     ├── figures/
     │   ├── rfmi_six_part_overview.png
     │   ├── demo_synthetic_input.jpg
@@ -85,6 +101,8 @@ The points and lines shown in the overlay figures are generated from MediaPipe l
 Generated folders such as `outputs_landmarks/`, `outputs_overlay/`, `outputs_features/`, `outputs_stats/`, `models/`, and `logs/` are created when the notebook is run. They are not committed to the repository.
 
 ## How to Run
+
+Use a clean Python environment with the pinned packages in `requirements.txt`. On minimal Linux systems, MediaPipe/OpenCV may also require runtime libraries such as `libgl1` and `libglib2.0-0`; see [`docs/reproducibility.md`](docs/reproducibility.md) for platform notes and model-download alternatives.
 
 ### Option 1: Jupyter notebook
 
@@ -107,6 +125,7 @@ python scripts/01_prepare_project.py --root . --open-image example_data/images/S
 python scripts/02_detect_and_overlay.py --root .
 python scripts/04_compute_rfmi.py --root .
 python scripts/05_summarize_rfmi.py --root .
+python scripts/06_validate_public_demo.py --root .
 ```
 
 ## Installation
@@ -149,15 +168,15 @@ The current demo calculates:
 - jaw-width/face-width index;
 - selected MediaPipe eye-related blendshape scores.
 
-All geometric RFMI values are computed from MediaPipe landmark coordinates. The RFMI formulas are study-defined features; they are not official MediaPipe medical measurements.
+All geometric RFMI values are computed from MediaPipe landmark coordinates. The RFMI formulas are study-defined features; they are not official MediaPipe medical measurements. The formulas, landmark indices, and interpretation limits are documented in [`docs/methods_rfmi.md`](docs/methods_rfmi.md).
 
 ## Data and Ethics
 
-The included demonstration image is synthetic and AI-generated. It does not depict a real participant. Real child facial images and participant metadata should only be processed under appropriate ethics approval, consent, and privacy protection procedures.
+The included demonstration image is synthetic and AI-generated. It does not depict a real participant. Real child facial images and participant metadata should only be processed under appropriate ethics approval, consent, privacy protection, and data-governance procedures. The demo outputs are not clinical, diagnostic, or population-level study estimates.
 
 ## Citation
 
-If you use this repository, please cite the repository using `CITATION.cff` and cite MediaPipe Face Landmarker according to the official MediaPipe documentation.
+If you use this repository, please cite the repository using `CITATION.cff` and cite MediaPipe Face Landmarker according to the official MediaPipe documentation. For manuscripts, also report that the public demo uses one synthetic image and that RFMI variables are study-defined relative image indices.
 
 ## License
 
