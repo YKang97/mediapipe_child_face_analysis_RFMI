@@ -1,37 +1,53 @@
 # MediaPipe Child Face RFMI Demo
 
-This repository provides a compact Jupyter-based demonstration for converting an open-eye frontal child facial image into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, relative facial morphology indices (RFMI), and simple descriptive output tables.
+This repository provides a six-part Jupyter demonstration for converting an open-eye frontal child facial image into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, relative facial morphology indices (RFMI), and simple descriptive output tables.
 
-The repository is designed as the public code companion for a pilot feasibility study on distance-uncalibrated child frontal facial photographs. It uses a synthetic open-eye child facial image for demonstration only. No real child participant photographs, participant metadata, or study-level scoring records are included.
+The repository is designed as the public code companion for a pilot feasibility study on distance-uncalibrated child frontal facial photographs. It uses one synthetic open-eye child facial image for demonstration only. No real child participant photographs, participant metadata, or study-level scoring records are included.
 
-## What This Repository Shows
+## Six-Part Workflow Preview
 
-The notebook is intentionally simple. It is meant to show reviewers and readers what each computational step does and what files are produced after running it.
+The notebook is organized so that reviewers can see, step by step, what the code does and what each step produces.
 
-| Notebook section | Purpose | Main outputs |
-|---|---|---|
-| 1. Install and import libraries | Load the Python environment and required packages. | Python session with `mediapipe`, `pandas`, `numpy`, `Pillow`, and display tools. |
-| 2. Prepare synthetic example image | Copy the synthetic image into a working folder and create a manifest. | `outputs_manifest/manifest.csv` |
-| 3. Run MediaPipe and export coordinates | Run MediaPipe Face Landmarker and save raw landmark coordinates. | `outputs_landmarks/landmarks_raw.csv`, `outputs_landmarks/detection_log.csv` |
-| 4. Inspect overlay images | Display coordinate-based full-face, eye-region, and RFMI-line overlays. | `outputs_overlay/full_face/`, `outputs_overlay/eye_zoom/`, `outputs_overlay/rfmi_lines/` |
-| 5. Compute RFMI indices | Convert selected official MediaPipe landmark coordinates into relative facial morphology indices. | `outputs_features/rfmi_image_level.csv`, `outputs_features/rfmi_subject_level.csv` |
-| 6. Create summary tables | Generate subject-level and descriptive RFMI tables. | `outputs_stats/tables/rfmi_subject_indices.csv`, `outputs_stats/tables/rfmi_summary.csv` |
+![Six-part RFMI workflow overview](docs/figures/rfmi_six_part_overview.png)
 
-## Demo Output Preview
+## What Each Part Does
 
-The points and lines shown below are generated from MediaPipe landmark coordinates. They are not manually drawn landmarks.
+| Part | Code section | What the code does | What readers see after running it |
+|---|---|---|---|
+| Part 1 | Environment setup and synthetic input image | Imports Python packages, locates the repository root, and displays the clean synthetic open-eye image. | Printed project path and the AI-generated example image. |
+| Part 2 | Manifest creation | Writes the image manifest for the one-subject public demo. | `outputs_manifest/manifest.csv` with subject ID, image state, and copied analysis path. |
+| Part 3 | MediaPipe landmark detection | Runs MediaPipe Face Landmarker and exports raw coordinates. | `landmarks_raw.csv` with 478 landmark rows and `detection_log.csv`. |
+| Part 4 | Coordinate-based overlay figures | Displays full-face landmarks, eye-region zoom, and RFMI distance lines. | Three overlay images generated from MediaPipe coordinates. |
+| Part 5 | RFMI index calculation | Converts selected landmark distances into within-face RFMI variables. | Image-level and subject-level RFMI tables. |
+| Part 6 | Summary tables and output checklist | Creates descriptive RFMI summaries and lists expected output files. | `rfmi_subject_indices.csv`, `rfmi_summary.csv`, and an output checklist. |
 
-### Full-face landmark overlay
+## Example Input and Outputs
+
+### Part 1 input: synthetic open-eye image
+
+![Synthetic open-eye image](docs/figures/demo_synthetic_input.jpg)
+
+### Part 4 output: full-face landmark overlay
 
 ![Full-face landmark overlay](docs/figures/demo_full_face_overlay.jpg)
 
-### Eye-region landmark overlay
+### Part 4 output: eye-region landmark overlay
 
 ![Eye-region landmark overlay](docs/figures/demo_eye_zoom_overlay.jpg)
 
-### RFMI distance-line overlay
+### Part 4 output: RFMI distance-line overlay
 
 ![RFMI distance-line overlay](docs/figures/demo_rfmi_lines_overlay.jpg)
+
+### Part 5 output: subject-level RFMI table preview
+
+![Subject-level RFMI table preview](docs/figures/demo_rfmi_subject_table.png)
+
+### Part 6 output: descriptive RFMI summary preview
+
+![RFMI summary table preview](docs/figures/demo_rfmi_summary_table.png)
+
+The points and lines shown in the overlay figures are generated from MediaPipe landmark coordinates. They are not manually drawn landmarks.
 
 ## Repository Structure
 
@@ -54,9 +70,13 @@ The points and lines shown below are generated from MediaPipe landmark coordinat
 │   └── 05_summarize_rfmi.py
 └── docs/
     ├── figures/
+    │   ├── rfmi_six_part_overview.png
+    │   ├── demo_synthetic_input.jpg
     │   ├── demo_full_face_overlay.jpg
     │   ├── demo_eye_zoom_overlay.jpg
-    │   └── demo_rfmi_lines_overlay.jpg
+    │   ├── demo_rfmi_lines_overlay.jpg
+    │   ├── demo_rfmi_subject_table.png
+    │   └── demo_rfmi_summary_table.png
     └── tables/
         ├── demo_rfmi_subject_indices.csv
         └── demo_rfmi_summary.csv
@@ -74,7 +94,7 @@ Open:
 notebooks/BIBE_RFMI_Image_to_Indices_Demo.ipynb
 ```
 
-Then run the notebook from top to bottom.
+Then run the notebook from top to bottom. The notebook is the recommended entry point because it displays the code, explanation, and output for each part.
 
 The notebook automatically detects the repository root in common launch situations. If automatic detection fails, set `ROOT_OVERRIDE` in the first code cell to the local repository folder.
 
