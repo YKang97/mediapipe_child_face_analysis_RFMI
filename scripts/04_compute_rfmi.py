@@ -7,12 +7,12 @@ import numpy as np
 import pandas as pd
 
 
-RIGHT_EYE = {
+EYE_33_133 = {
     "outer": 33,
     "inner": 133,
     "vertical_pairs": [(159, 145), (158, 153), (160, 144)],
 }
-LEFT_EYE = {
+EYE_263_362 = {
     "outer": 263,
     "inner": 362,
     "vertical_pairs": [(386, 374), (385, 380), (387, 373)],
@@ -83,8 +83,8 @@ def compute_image_features(root: Path) -> pd.DataFrame:
         coords = coords_by_image[image_id]
         try:
             face_width = dist(coords, KEYPOINTS["face_left"], KEYPOINTS["face_right"])
-            right_eai = eye_aperture(coords, RIGHT_EYE)
-            left_eai = eye_aperture(coords, LEFT_EYE)
+            eye_33_133_eai = eye_aperture(coords, EYE_33_133)
+            eye_263_362_eai = eye_aperture(coords, EYE_263_362)
             rows.append(
                 {
                     "image_id": image_id,
@@ -92,10 +92,10 @@ def compute_image_features(root: Path) -> pd.DataFrame:
                     "state": "open",
                     "include_source": include_source,
                     "face_width_px": face_width,
-                    "right_eye_aperture_index": right_eai,
-                    "left_eye_aperture_index": left_eai,
-                    "mean_eye_aperture_index": np.nanmean([right_eai, left_eai]),
-                    "eye_aperture_asymmetry_index": abs(right_eai - left_eai),
+                    "eye_33_133_aperture_index": eye_33_133_eai,
+                    "eye_263_362_aperture_index": eye_263_362_eai,
+                    "mean_eye_aperture_index": np.nanmean([eye_33_133_eai, eye_263_362_eai]),
+                    "eye_aperture_asymmetry_index": abs(eye_33_133_eai - eye_263_362_eai),
                     "nose_width_face_width_index": dist(coords, KEYPOINTS["nose_left"], KEYPOINTS["nose_right"]) / face_width if face_width else np.nan,
                     "mouth_width_face_width_index": dist(coords, KEYPOINTS["mouth_left"], KEYPOINTS["mouth_right"]) / face_width if face_width else np.nan,
                     "jaw_width_face_width_index": dist(coords, KEYPOINTS["jaw_left"], KEYPOINTS["jaw_right"]) / face_width if face_width else np.nan,

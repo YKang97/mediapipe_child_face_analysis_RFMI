@@ -7,15 +7,15 @@ import pandas as pd
 
 
 RFMI_METRICS = [
-    ("right_eye_aperture_index", "Right eye aperture index", "Eye geometry"),
-    ("left_eye_aperture_index", "Left eye aperture index", "Eye geometry"),
+    ("eye_33_133_aperture_index", "33-133 eye-region aperture index", "Eye geometry"),
+    ("eye_263_362_aperture_index", "263-362 eye-region aperture index", "Eye geometry"),
     ("mean_eye_aperture_index", "Mean eye aperture index", "Eye geometry"),
     ("eye_aperture_asymmetry_index", "Eye aperture asymmetry index", "Eye geometry"),
     ("nose_width_face_width_index", "Nose-width/face-width index", "Face ratio"),
     ("mouth_width_face_width_index", "Mouth-width/face-width index", "Face ratio"),
     ("jaw_width_face_width_index", "Jaw-width/face-width index", "Face ratio"),
-    ("eyeBlinkLeft", "Left eye blink score", "MediaPipe blendshape"),
-    ("eyeBlinkRight", "Right eye blink score", "MediaPipe blendshape"),
+    ("eyeBlinkLeft", "Eye blink auxiliary score: MediaPipe Left", "Eye-state auxiliary score"),
+    ("eyeBlinkRight", "Eye blink auxiliary score: MediaPipe Right", "Eye-state auxiliary score"),
 ]
 
 

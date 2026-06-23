@@ -1,0 +1,5 @@
+﻿field,dimension,score_0,score_1,score_2
+overall_score,Overall face,Not usable: major landmark displacement or unusable image.,Borderline: face detected but local mismatch requires review.,Usable: main landmarks align with the visible face region.
+eye_region_score,Eye region,Not usable: eye landmarks clearly miss the visible eye region.,Borderline: mild local mismatch or partial ambiguity.,Usable: eye landmarks are consistent with the visible eye region.
+nose_mouth_score,Nose-mouth region,Not usable: nose or mouth landmarks clearly miss the visible region.,Borderline: mild local mismatch or partial ambiguity.,Usable: nose and mouth landmarks are consistent with the visible region.
+facial_outline_score,Facial outline,Not usable: facial outline landmarks are clearly displaced.,Borderline: mild outline mismatch or partial occlusion.,Usable: facial outline landmarks are consistent with the visible face boundary.

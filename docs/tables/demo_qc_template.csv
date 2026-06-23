@@ -1,0 +1,2 @@
+﻿image_id,subject_id,state,detection_success,full_face_overlay,eye_zoom_overlay,rfmi_lines_overlay,rater_id,overall_score,eye_region_score,nose_mouth_score,facial_outline_score,include_main_analysis,comments
+SYN_open,SYN,open,True,outputs_overlay\full_face\SYN_open_overlay.jpg,outputs_overlay\eye_zoom\SYN_open_eye_zoom.jpg,outputs_overlay\rfmi_lines\SYN_open_rfmi_lines.jpg,,,,,,,

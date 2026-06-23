@@ -1,8 +1,22 @@
-# MediaPipe Child Face RFMI Demo
+# RFMI Extraction Framework for MediaPipe Child Facial Images
 
-This repository provides a six-part Jupyter demonstration for converting an open-eye frontal child facial image into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, relative facial morphology indices (RFMI), and simple descriptive output tables.
+This repository provides the public executable demonstration of an RFMI extraction framework and reproducible workflow for distance-uncalibrated open-eye frontal child facial photographs.
 
-The repository is designed as the public code companion for a pilot feasibility study on distance-uncalibrated child frontal facial photographs. It uses one synthetic open-eye child facial image for demonstration only. No real child participant photographs, participant metadata, or study-level scoring records are included.
+The workflow converts an input image into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, a blinded manual quality-control template, relative facial morphology indices (RFMI), and simple descriptive output tables.
+
+The repository is designed as the code companion for a pilot feasibility study. It uses one synthetic open-eye child facial image for demonstration only. No real child participant photographs, participant metadata, or study-level scoring records are included.
+
+## Workflow Concept
+
+The public repository separates the method into three layers:
+
+1. **Core RFMI calculation workflow**: image preparation, MediaPipe Face Landmarker detection, landmark export, RFMI calculation, and table output.
+2. **Visual quality-control workflow**: coordinate-based overlay figures and a blank blinded manual QC template for checking whether landmarks align with visible facial regions.
+3. **Technical validation module**: image scaling and horizontal-mirroring sensitivity analyses are reported in the manuscript as validation analyses. They are not required for every public demo run and are not included as real-study outputs in this repository.
+
+This distinction is important: the repository demonstrates the executable RFMI workflow, while the manuscript reports the study-level feasibility and technical sensitivity results.
+
+Additional reviewer-oriented details are provided in [`docs/methods_rfmi.md`](docs/methods_rfmi.md) and [`docs/reproducibility.md`](docs/reproducibility.md).
 
 ## Reviewer-Facing Public-Release Notes
 
@@ -29,8 +43,8 @@ The notebook is organized so that reviewers can see, step by step, what the code
 | Part 1 | Environment setup and synthetic input image | Imports Python packages, locates the repository root, and displays the clean synthetic open-eye image. | Printed project path and the AI-generated example image. |
 | Part 2 | Manifest creation | Writes the image manifest for the one-subject public demo. | `outputs_manifest/manifest.csv` with subject ID, image state, and copied analysis path. |
 | Part 3 | MediaPipe landmark detection | Runs MediaPipe Face Landmarker and exports raw coordinates. | `landmarks_raw.csv` with 478 landmark rows and `detection_log.csv`. |
-| Part 4 | Coordinate-based overlay figures | Displays full-face landmarks, eye-region zoom, and RFMI distance lines. | Three overlay images generated from MediaPipe coordinates. |
-| Part 5 | RFMI index calculation | Converts selected landmark distances into within-face RFMI variables. | Image-level and subject-level RFMI tables. |
+| Part 4 | Overlay figures and QC template | Displays full-face landmarks, eye-region zoom, RFMI distance lines, and creates a blank blinded manual QC template. | Three overlay images plus `outputs_qc/qc_template.csv` and `outputs_qc/qc_score_codebook.csv`. |
+| Part 5 | RFMI index calculation | Converts selected MediaPipe landmark coordinate groups into RFMI variables. | Image-level and subject-level RFMI tables. |
 | Part 6 | Summary tables and output checklist | Creates descriptive RFMI summaries and lists expected output files. | `rfmi_subject_indices.csv`, `rfmi_summary.csv`, and an output checklist. |
 
 ## Example Input and Outputs
@@ -78,6 +92,7 @@ The points and lines shown in the overlay figures are generated from MediaPipe l
 ├── scripts/
 │   ├── 01_prepare_project.py
 │   ├── 02_detect_and_overlay.py
+│   ├── 03_generate_qc_template.py
 │   ├── 04_compute_rfmi.py
 │   ├── 05_summarize_rfmi.py
 │   └── 06_validate_public_demo.py
@@ -94,11 +109,13 @@ The points and lines shown in the overlay figures are generated from MediaPipe l
     │   ├── demo_rfmi_subject_table.png
     │   └── demo_rfmi_summary_table.png
     └── tables/
+        ├── demo_qc_score_codebook.csv
+        ├── demo_qc_template.csv
         ├── demo_rfmi_subject_indices.csv
         └── demo_rfmi_summary.csv
 ```
 
-Generated folders such as `outputs_landmarks/`, `outputs_overlay/`, `outputs_features/`, `outputs_stats/`, `models/`, and `logs/` are created when the notebook is run. They are not committed to the repository.
+Generated folders such as `outputs_manifest/`, `outputs_landmarks/`, `outputs_overlay/`, `outputs_qc/`, `outputs_features/`, `outputs_stats/`, `models/`, and `logs/` are created when the notebook is run. They are not committed to the repository.
 
 ## How to Run
 
@@ -123,6 +140,7 @@ From the repository root:
 ```bash
 python scripts/01_prepare_project.py --root . --open-image example_data/images/SYN_open.jpg --child-id SYN
 python scripts/02_detect_and_overlay.py --root .
+python scripts/03_generate_qc_template.py --root .
 python scripts/04_compute_rfmi.py --root .
 python scripts/05_summarize_rfmi.py --root .
 python scripts/06_validate_public_demo.py --root .
@@ -160,15 +178,24 @@ RFMI values are relative image indices, not centimeter measurements. They are de
 
 The current demo calculates:
 
-- right and left eye aperture indices;
+- 33-133 eye-region aperture index;
+- 263-362 eye-region aperture index;
 - mean eye aperture index;
 - eye aperture asymmetry index;
 - nose-width/face-width index;
 - mouth-width/face-width index;
 - jaw-width/face-width index;
-- selected MediaPipe eye-related blendshape scores.
+- selected MediaPipe eye-state auxiliary scores.
+
+The single-eye-region variables are named by MediaPipe landmark index groups rather than anatomical left/right eye labels. This avoids ambiguity caused by camera mirroring, software image flips, and viewer perspective.
 
 All geometric RFMI values are computed from MediaPipe landmark coordinates. The RFMI formulas are study-defined features; they are not official MediaPipe medical measurements. The formulas, landmark indices, and interpretation limits are documented in [`docs/methods_rfmi.md`](docs/methods_rfmi.md).
+
+## Blinded Manual Quality Control
+
+The repository creates a blank QC template from the generated overlay files. The template is intended to help researchers review whether landmark overlays align with visible facial regions before using RFMI values in a study dataset.
+
+The public demo does not contain real human ratings. For real child image studies, QC scoring should be performed under the study's ethics approval and data-protection plan.
 
 ## Data and Ethics
 

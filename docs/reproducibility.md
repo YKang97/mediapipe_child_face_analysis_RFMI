@@ -6,10 +6,10 @@ This checklist summarizes what reviewers should be able to reproduce from the pu
 
 Included:
 
-- source code for preparing the demo image, running MediaPipe Face Landmarker, drawing coordinate-based overlays, computing RFMI variables, and creating summary tables;
+- source code for preparing the demo image, running MediaPipe Face Landmarker, drawing coordinate-based overlays, creating a blank blinded quality-control template, computing RFMI variables, and creating summary tables;
 - one synthetic, AI-generated open-eye child face image for demonstration;
 - static preview figures and CSV tables generated from the synthetic image;
-- citation, license, and AI-image disclosure files.
+- method documentation, citation metadata, license, and AI-image disclosure files.
 
 Excluded:
 
@@ -17,7 +17,8 @@ Excluded:
 - participant metadata;
 - consent records;
 - diagnostic labels, clinical scores, or study-level statistical datasets;
-- downloaded MediaPipe model binaries, because the preparation script downloads or verifies the fixed model file.
+- downloaded MediaPipe model binaries, because the preparation script downloads or verifies the fixed model file;
+- real blinded QC ratings, because they belong to the protected study dataset.
 
 ## Recommended Python environment
 
@@ -28,6 +29,12 @@ python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+```
+
+On Windows, activate the environment with:
+
+```powershell
+.venv\Scripts\Activate.ps1
 ```
 
 The repository has been structured around the pinned package versions in `requirements.txt`. If a newer Python version or package resolver selects incompatible binary wheels, use a stable Python release supported by MediaPipe and re-install the pinned dependencies in a clean environment.
@@ -64,6 +71,7 @@ From the repository root, run:
 ```bash
 python scripts/01_prepare_project.py --root . --open-image example_data/images/SYN_open.jpg --child-id SYN
 python scripts/02_detect_and_overlay.py --root .
+python scripts/03_generate_qc_template.py --root .
 python scripts/04_compute_rfmi.py --root .
 python scripts/05_summarize_rfmi.py --root .
 python scripts/06_validate_public_demo.py --root .
@@ -84,6 +92,8 @@ The main generated outputs are intentionally ignored by Git and should appear af
 | `outputs_overlay/full_face/` | Full-face coordinate overlay images. |
 | `outputs_overlay/eye_zoom/` | Eye-region coordinate overlay images. |
 | `outputs_overlay/rfmi_lines/` | RFMI distance-line overlay images. |
+| `outputs_qc/qc_template.csv` | Blank blinded manual QC template generated from overlay paths. |
+| `outputs_qc/qc_score_codebook.csv` | Score definitions for the public QC template. |
 | `outputs_features/rfmi_image_level.csv` | Image-level RFMI outputs. |
 | `outputs_features/rfmi_subject_level.csv` | Subject-level RFMI outputs. |
 | `outputs_stats/tables/rfmi_subject_indices.csv` | Public-format subject-level RFMI table. |

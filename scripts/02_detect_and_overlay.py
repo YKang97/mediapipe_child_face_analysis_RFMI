@@ -9,12 +9,12 @@ import pandas as pd
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
-RIGHT_EYE = {
+EYE_33_133 = {
     "outer": 33,
     "inner": 133,
     "vertical_pairs": [(159, 145), (158, 153), (160, 144)],
 }
-LEFT_EYE = {
+EYE_263_362 = {
     "outer": 263,
     "inner": 362,
     "vertical_pairs": [(386, 374), (385, 380), (387, 373)],
@@ -33,12 +33,12 @@ POINT_GROUPS = {
     "eye": sorted(
         set(
             [
-                RIGHT_EYE["outer"],
-                RIGHT_EYE["inner"],
-                LEFT_EYE["outer"],
-                LEFT_EYE["inner"],
-                *[p for pair in RIGHT_EYE["vertical_pairs"] for p in pair],
-                *[p for pair in LEFT_EYE["vertical_pairs"] for p in pair],
+                EYE_33_133["outer"],
+                EYE_33_133["inner"],
+                EYE_263_362["outer"],
+                EYE_263_362["inner"],
+                *[p for pair in EYE_33_133["vertical_pairs"] for p in pair],
+                *[p for pair in EYE_263_362["vertical_pairs"] for p in pair],
             ]
         )
     ),
@@ -194,9 +194,9 @@ def draw_rfmi_lines(draw: ImageDraw.ImageDraw, coords: dict[int, tuple[float, fl
     draw_line(draw, coords, KEYPOINTS["nose_left"], KEYPOINTS["nose_right"], COLORS["nose"], max(3, int(4 * scale)))
     draw_line(draw, coords, KEYPOINTS["mouth_left"], KEYPOINTS["mouth_right"], COLORS["mouth"], max(3, int(4 * scale)))
     draw_line(draw, coords, KEYPOINTS["jaw_left"], KEYPOINTS["jaw_right"], COLORS["jaw"], max(3, int(4 * scale)))
-    draw_line(draw, coords, RIGHT_EYE["outer"], RIGHT_EYE["inner"], COLORS["eye"], max(3, int(4 * scale)))
-    draw_line(draw, coords, LEFT_EYE["outer"], LEFT_EYE["inner"], COLORS["eye"], max(3, int(4 * scale)))
-    for a, b in RIGHT_EYE["vertical_pairs"] + LEFT_EYE["vertical_pairs"]:
+    draw_line(draw, coords, EYE_33_133["outer"], EYE_33_133["inner"], COLORS["eye"], max(3, int(4 * scale)))
+    draw_line(draw, coords, EYE_263_362["outer"], EYE_263_362["inner"], COLORS["eye"], max(3, int(4 * scale)))
+    for a, b in EYE_33_133["vertical_pairs"] + EYE_263_362["vertical_pairs"]:
         draw_line(draw, coords, a, b, COLORS["eye"], max(2, int(3 * scale)))
 
 

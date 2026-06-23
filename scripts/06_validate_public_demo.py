@@ -22,12 +22,15 @@ REQUIRED_FILES = [
     "docs/figures/demo_rfmi_lines_overlay.jpg",
     "docs/figures/demo_rfmi_subject_table.png",
     "docs/figures/demo_rfmi_summary_table.png",
+    "docs/tables/demo_qc_template.csv",
+    "docs/tables/demo_qc_score_codebook.csv",
     "docs/tables/demo_rfmi_subject_indices.csv",
     "docs/tables/demo_rfmi_summary.csv",
     "example_data/images/SYN_open.jpg",
     "notebooks/BIBE_RFMI_Image_to_Indices_Demo.ipynb",
     "scripts/01_prepare_project.py",
     "scripts/02_detect_and_overlay.py",
+    "scripts/03_generate_qc_template.py",
     "scripts/04_compute_rfmi.py",
     "scripts/05_summarize_rfmi.py",
     "scripts/06_validate_public_demo.py",
@@ -39,8 +42,8 @@ REQUIRED_SUBJECT_COLUMNS = {
     "state",
     "include_source",
     "face_width_px",
-    "right_eye_aperture_index",
-    "left_eye_aperture_index",
+    "eye_33_133_aperture_index",
+    "eye_263_362_aperture_index",
     "mean_eye_aperture_index",
     "eye_aperture_asymmetry_index",
     "nose_width_face_width_index",
@@ -63,12 +66,30 @@ REQUIRED_SUMMARY_COLUMNS = {
     "mean_sd",
 }
 
+REQUIRED_QC_COLUMNS = {
+    "image_id",
+    "subject_id",
+    "state",
+    "detection_success",
+    "full_face_overlay",
+    "eye_zoom_overlay",
+    "rfmi_lines_overlay",
+    "rater_id",
+    "overall_score",
+    "eye_region_score",
+    "nose_mouth_score",
+    "facial_outline_score",
+    "include_main_analysis",
+    "comments",
+}
+
 REQUIRED_README_PHRASES = [
     "synthetic",
     "No real child participant photographs",
     "not centimeter measurements",
     "not official MediaPipe medical measurements",
     "ethics approval",
+    "blinded manual quality-control template",
 ]
 
 
@@ -118,10 +139,16 @@ def validate_notebook(root: Path) -> None:
     if notebook.get("nbformat") != 4:
         raise ValidationError("Notebook nbformat is not 4.")
     text = "\n".join("".join(cell.get("source", [])) for cell in notebook.get("cells", []))
-    if "official MediaPipe landmark coordinates" in text:
-        raise ValidationError("Notebook contains over-strong 'official MediaPipe landmark coordinates' wording.")
-    if "selected MediaPipe Face Landmarker output coordinates" not in text:
-        raise ValidationError("Notebook is missing reviewer-safe RFMI coordinate wording.")
+    required_phrases = [
+        "RFMI extraction framework",
+        "Coordinate-Based Overlay Figures and QC Template",
+        "03_generate_qc_template.py",
+        "eye_33_133_aperture_index",
+        "eye_263_362_aperture_index",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in text]
+    if missing:
+        raise ValidationError(f"Notebook is missing required public-workflow text: {missing}")
 
 
 def validate_static_tables(root: Path) -> None:
@@ -134,6 +161,11 @@ def validate_static_tables(root: Path) -> None:
     missing_summary = sorted(REQUIRED_SUMMARY_COLUMNS - summary_header)
     if missing_summary:
         raise ValidationError(f"Summary demo table is missing columns: {missing_summary}")
+
+    qc_header = read_csv_header(root / "docs" / "tables" / "demo_qc_template.csv")
+    missing_qc = sorted(REQUIRED_QC_COLUMNS - qc_header)
+    if missing_qc:
+        raise ValidationError(f"QC demo template is missing columns: {missing_qc}")
 
 
 def main() -> None:

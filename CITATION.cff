@@ -1,16 +1,19 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite it as below."
-title: "MediaPipe Child Face RFMI Demo"
+title: "RFMI Extraction Framework for MediaPipe Child Facial Images"
 type: software
 authors:
   - family-names: Jiang
     given-names: Yankang
 repository-code: "https://github.com/YKang97/mediapipe_child_face_analysis_RFMI"
-abstract: "A public Jupyter demonstration for converting open-eye frontal child facial images into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, relative facial morphology indices, and descriptive output tables."
+abstract: "A public Jupyter demonstration for converting open-eye frontal child facial images into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, blinded manual quality-control templates, relative facial morphology indices, and descriptive output tables."
 keywords:
   - MediaPipe
   - Face Landmarker
   - relative facial morphology indices
+  - RFMI extraction framework
+  - reproducible workflow
+  - landmark overlay
   - child facial image
   - computer vision
 license: MIT
