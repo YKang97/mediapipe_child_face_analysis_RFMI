@@ -28,8 +28,6 @@ This repository is intended to be reviewed as a transparent computational demo r
 - static preview figures and CSV tables are included only to show expected output structure from the synthetic image;
 - real child facial images require ethics approval, consent, privacy protection, and data-governance review before processing or sharing.
 
-Additional reviewer-oriented details are provided in [`docs/methods_rfmi.md`](docs/methods_rfmi.md) and [`docs/reproducibility.md`](docs/reproducibility.md).
-
 ## Six-Part Workflow Preview
 
 The notebook is organized so that reviewers can see, step by step, what the code does and what each step produces.
