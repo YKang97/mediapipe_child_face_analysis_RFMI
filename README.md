@@ -12,7 +12,7 @@ The public repository separates the method into three layers:
 
 1. **Core RFMI calculation workflow**: image preparation, MediaPipe Face Landmarker detection, landmark export, RFMI calculation, and table output.
 2. **Visual quality-control workflow**: coordinate-based overlay figures and a blank blinded manual QC template for checking whether landmarks align with visible facial regions.
-3. **Technical validation module**: image scaling and horizontal-mirroring sensitivity analyses are reported in the manuscript as validation analyses. They are not required for every public demo run and are not included as real-study outputs in this repository.
+3. **Technical sensitivity analysis module**: image scaling and horizontal-mirroring sensitivity analyses are reported in the manuscript as technical sensitivity analyses. They are not required for every public demo run and are not included as real-study outputs in this repository.
 
 This distinction is important: the repository demonstrates the executable RFMI workflow, while the manuscript reports the study-level feasibility and technical sensitivity results.
 
