@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 REQUIRED_FILES = [
+    ".python-version",
     "README.md",
     "LICENSE",
     "CITATION.cff",
@@ -35,6 +36,18 @@ REQUIRED_FILES = [
     "scripts/05_summarize_rfmi.py",
     "scripts/06_validate_public_demo.py",
 ]
+
+EXPECTED_PYTHON_VERSION = "3.13.9"
+
+EXPECTED_REQUIREMENTS = {
+    "mediapipe": "0.10.35",
+    "pillow": "12.0.0",
+    "pandas": "2.3.3",
+    "numpy": "2.3.3",
+    "matplotlib": "3.10.7",
+    "openpyxl": "3.1.5",
+    "jupyter": "1.1.1",
+}
 
 REQUIRED_SUBJECT_COLUMNS = {
     "image_id",
@@ -126,6 +139,30 @@ def validate_required_files(root: Path) -> None:
         require_file(root, relative_path)
 
 
+def validate_environment_specification(root: Path) -> None:
+    python_version = (root / ".python-version").read_text(encoding="utf-8").strip()
+    if python_version != EXPECTED_PYTHON_VERSION:
+        raise ValidationError(
+            f".python-version is {python_version!r}; expected {EXPECTED_PYTHON_VERSION!r}."
+        )
+
+    pinned_requirements: dict[str, str] = {}
+    for raw_line in (root / "requirements.txt").read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "==" not in line:
+            raise ValidationError(f"Requirement is not exactly pinned: {line}")
+        package, version = line.split("==", maxsplit=1)
+        pinned_requirements[package.strip().lower()] = version.strip()
+
+    if pinned_requirements != EXPECTED_REQUIREMENTS:
+        raise ValidationError(
+            "requirements.txt does not match the manuscript analysis environment: "
+            f"{pinned_requirements}"
+        )
+
+
 def validate_readme_language(root: Path) -> None:
     readme = (root / "README.md").read_text(encoding="utf-8")
     missing = [phrase for phrase in REQUIRED_README_PHRASES if phrase not in readme]
@@ -141,6 +178,7 @@ def validate_notebook(root: Path) -> None:
     text = "\n".join("".join(cell.get("source", [])) for cell in notebook.get("cells", []))
     required_phrases = [
         "RFMI extraction framework",
+        "Runtime environment",
         "Coordinate-Based Overlay Figures and QC Template",
         "03_generate_qc_template.py",
         "eye_33_133_aperture_index",
@@ -172,6 +210,7 @@ def main() -> None:
     args = parse_args()
     root = args.root.expanduser().resolve()
     validate_required_files(root)
+    validate_environment_specification(root)
     validate_readme_language(root)
     validate_notebook(root)
     validate_static_tables(root)

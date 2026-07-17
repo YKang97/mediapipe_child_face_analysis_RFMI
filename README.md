@@ -81,6 +81,7 @@ The points and lines shown in the overlay figures are generated from MediaPipe l
 ├── LICENSE
 ├── CITATION.cff
 ├── AI_IMAGE_DISCLOSURE.md
+├── .python-version
 ├── requirements.txt
 ├── example_data/
 │   └── images/
@@ -117,7 +118,7 @@ Generated folders such as `outputs_manifest/`, `outputs_landmarks/`, `outputs_ov
 
 ## How to Run
 
-Use a clean Python environment with the pinned packages in `requirements.txt`. On minimal Linux systems, MediaPipe/OpenCV may also require runtime libraries such as `libgl1` and `libglib2.0-0`; see [`docs/reproducibility.md`](docs/reproducibility.md) for platform notes and model-download alternatives.
+Use Python 3.13.9 in a clean environment with the pinned packages in `requirements.txt`. This is the computational environment used to generate the study outputs reported in the accompanying manuscript. On minimal Linux systems, MediaPipe/OpenCV may also require runtime libraries such as `libgl1` and `libglib2.0-0`; see [`docs/reproducibility.md`](docs/reproducibility.md) for platform notes and model-download alternatives.
 
 ### Option 1: Jupyter notebook
 
@@ -146,13 +147,15 @@ python scripts/06_validate_public_demo.py --root .
 
 ## Installation
 
-Create a Python environment and install the required packages:
+Create a Python 3.13.9 environment and install the required packages:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-The notebook also includes an optional installation cell. Set `INSTALL = True` only when packages are not already installed in the active Jupyter environment.
+The locked direct dependencies are MediaPipe 0.10.35, Pillow 12.0.0, pandas 2.3.3, NumPy 2.3.3, Matplotlib 3.10.7, openpyxl 3.1.5, and Jupyter 1.1.1. The notebook prints and checks these versions before running the public demo. Set `INSTALL = True` only when packages are not already installed in the active Jupyter environment.
+
+On Windows systems without long-path support, create the virtual environment in a short location such as `C:\venvs\rfmi`; installing the full Jupyter dependency set inside a deeply nested repository path can exceed the legacy path-length limit.
 
 ## MediaPipe Model
 

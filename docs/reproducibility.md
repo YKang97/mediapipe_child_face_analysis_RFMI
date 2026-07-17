@@ -22,7 +22,20 @@ Excluded:
 
 ## Recommended Python environment
 
-Use a clean Python environment before installing the pinned dependencies:
+The study outputs and the public demonstration workflow use the following locked environment:
+
+| Component | Version |
+|---|---:|
+| Python | 3.13.9 |
+| MediaPipe | 0.10.35 |
+| Pillow | 12.0.0 |
+| pandas | 2.3.3 |
+| NumPy | 2.3.3 |
+| Matplotlib | 3.10.7 |
+| openpyxl | 3.1.5 |
+| Jupyter | 1.1.1 |
+
+Use Python 3.13.9 to create a clean environment before installing the pinned dependencies:
 
 ```bash
 python -m venv .venv
@@ -31,13 +44,16 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-On Windows, activate the environment with:
+On Windows, create the virtual environment in a short path to avoid the legacy path-length limit that can affect Jupyter dependencies, then activate it with:
 
 ```powershell
-.venv\Scripts\Activate.ps1
+python -m venv C:\venvs\rfmi
+C:\venvs\rfmi\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-The repository has been structured around the pinned package versions in `requirements.txt`. If a newer Python version or package resolver selects incompatible binary wheels, use a stable Python release supported by MediaPipe and re-install the pinned dependencies in a clean environment.
+The `.python-version` and `requirements.txt` files record the tested Python and direct package versions. Do not substitute newer package versions when reproducing the manuscript results. If installation fails because of platform-specific binary availability, report the operating system and the substituted package version rather than treating the environment as identical.
 
 ## Linux system dependencies
 
@@ -106,6 +122,8 @@ Because the public repository uses one synthetic image, summary statistics demon
 `python scripts/06_validate_public_demo.py --root .` performs checks that do not require MediaPipe or model downloads. It verifies that required public files are present, documentation contains key cautionary language, the notebook JSON is parseable, and the static preview CSV files contain the expected demo columns.
 
 This validator is not a replacement for running the full MediaPipe workflow. It is a public-release guardrail for documentation and static demo assets.
+
+The GitHub Actions workflow installs the locked environment and runs the complete six-script synthetic demonstration before applying this lightweight validation. This end-to-end check does not use or expose participant data.
 
 ## Review limitations to report
 
