@@ -61,7 +61,7 @@ MediaPipe depends on OpenCV-related binary libraries. On minimal Linux container
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y libgl1 libglib2.0-0
+sudo apt-get install -y libgl1 libgles2 libglib2.0-0
 ```
 
 The exact package names may differ by distribution.

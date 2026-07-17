@@ -118,7 +118,7 @@ Generated folders such as `outputs_manifest/`, `outputs_landmarks/`, `outputs_ov
 
 ## How to Run
 
-Use Python 3.13.9 in a clean environment with the pinned packages in `requirements.txt`. This is the computational environment used to generate the study outputs reported in the accompanying manuscript. On minimal Linux systems, MediaPipe/OpenCV may also require runtime libraries such as `libgl1` and `libglib2.0-0`; see [`docs/reproducibility.md`](docs/reproducibility.md) for platform notes and model-download alternatives.
+Use Python 3.13.9 in a clean environment with the pinned packages in `requirements.txt`. This is the computational environment used to generate the study outputs reported in the accompanying manuscript. On minimal Linux systems, MediaPipe/OpenCV may also require runtime libraries such as `libgl1`, `libgles2`, and `libglib2.0-0`; see [`docs/reproducibility.md`](docs/reproducibility.md) for platform notes and model-download alternatives.
 
 ### Option 1: Jupyter notebook
 
