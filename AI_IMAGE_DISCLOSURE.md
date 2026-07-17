@@ -20,6 +20,6 @@ The synthetic image does not depict a real participant and should not be interpr
 - The static preview tables generated from this image demonstrate file structure only; they are not statistical results from a study cohort.
 - Real child facial images should not be substituted into the public workflow unless the user has appropriate ethics approval, consent, secure storage, and data-governance procedures.
 
-## Provenance statement
+## Provenance and licensing
 
-The repository treats the included face image as a synthetic AI-generated demonstration asset supplied for code review and reproducibility testing. No claim is made that it depicts or is derived from a real child participant. If the repository is submitted with a manuscript, authors should retain any available generation records, prompts, dates, and tool-license information in their study documentation.
+The included face image was created as a synthetic demonstration asset and was not derived from a participant photograph. No claim is made that it represents a specific child or population. The MIT License applies to the repository source code; it does not grant additional rights to reuse the synthetic face image outside this demonstration. Derived overlay figures and table previews are retained to document the expected workflow output.

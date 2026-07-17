@@ -1,6 +1,6 @@
 # RFMI Methods and Landmark Definitions
 
-This document defines the relative facial morphology indices (RFMI) used in the public demonstration. It is intended to make the repository auditable by reviewers without implying that these variables are official MediaPipe clinical or medical measurements.
+This document defines the relative facial morphology indices (RFMI) used in the public demonstration. It records the coordinate source, landmark groups, formulas, and interpretation limits without implying that these variables are official MediaPipe clinical or medical measurements.
 
 ## Scope of the public demo
 
@@ -72,6 +72,8 @@ These are MediaPipe model outputs. In this repository they are included as descr
 
 The public demo does not contain real human ratings. In real child image studies, QC scoring should be performed under the study ethics approval and data-protection plan.
 
+The calculation script produces RFMI rows for successfully detected images. It does not read completed QC scores or apply study-specific inclusion decisions. Researchers using real data should complete the QC process and apply prespecified inclusion criteria before statistical analysis.
+
 ## Interpretation limits
 
 RFMI outputs should be described as image-derived, relative, and model-dependent. They should not be interpreted as:
@@ -82,8 +84,8 @@ RFMI outputs should be described as image-derived, relative, and model-dependent
 - population estimates, because the public demo uses only one synthetic example image;
 - proof that the same workflow is valid for uncontrolled real-world child photographs without separate validation.
 
-## Recommended reporting language
+## Suggested methods description
 
-For manuscripts or public repository descriptions, use language such as:
+A study using this workflow may describe the method as follows:
 
 > We used MediaPipe Face Landmarker to export facial landmark coordinates from frontal open-eye images. We then computed study-defined relative facial morphology indices from selected landmark distance ratios. These RFMI variables are within-image proportional indices and are not official MediaPipe medical measurements.

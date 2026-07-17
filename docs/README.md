@@ -2,10 +2,10 @@
 
 This folder contains static demonstration outputs generated from the synthetic open-eye example image. These files are included so that readers can preview the expected notebook outputs directly from the repository README. They are demonstration artifacts only and are not participant data, clinical measurements, or population-level study estimates.
 
-## Reviewer Documentation
+## Documentation
 
 - `methods_rfmi.md`: RFMI formulas, MediaPipe landmark index groups, exported coordinate fields, eye-state auxiliary fields, visual QC template, and interpretation limits.
-- `reproducibility.md`: public-release scope, environment notes, expected generated outputs, and validation checklist.
+- `reproducibility.md`: repository scope, environment notes, expected generated outputs, and validation checklist.
 
 ## Figures
 

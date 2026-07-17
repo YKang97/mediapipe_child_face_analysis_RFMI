@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite it as below."
-title: "RFMI Extraction Framework for MediaPipe Child Facial Images"
+title: "RFMI Extraction Framework for Child Facial Images"
 type: software
 authors:
   - family-names: Jiang

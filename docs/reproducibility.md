@@ -1,8 +1,8 @@
-# Reproducibility and Public-Release Checklist
+# Reproducibility Checklist
 
-This checklist summarizes what reviewers should be able to reproduce from the public repository and what is intentionally excluded for privacy and ethics reasons.
+This checklist summarizes what can be reproduced from the repository and what is intentionally excluded for privacy and ethics reasons.
 
-## Public-release scope
+## Repository scope
 
 Included:
 
@@ -22,7 +22,7 @@ Excluded:
 
 ## Recommended Python environment
 
-The study outputs and the public demonstration workflow use the following locked environment:
+The public demonstration workflow was tested with the following locked environment:
 
 | Component | Version |
 |---|---:|
@@ -53,7 +53,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-The `.python-version` and `requirements.txt` files record the tested Python and direct package versions. Do not substitute newer package versions when reproducing the manuscript results. If installation fails because of platform-specific binary availability, report the operating system and the substituted package version rather than treating the environment as identical.
+The `.python-version` and `requirements.txt` files are the authoritative environment specification for this repository. A run with substituted package versions should be documented as a different environment rather than treated as identical.
 
 ## Linux system dependencies
 
@@ -93,7 +93,7 @@ python scripts/05_summarize_rfmi.py --root .
 python scripts/06_validate_public_demo.py --root .
 ```
 
-The notebook provides the same workflow in a step-by-step review format.
+The notebook provides the same workflow in a step-by-step format.
 
 ## Expected generated outputs
 
@@ -121,13 +121,13 @@ Because the public repository uses one synthetic image, summary statistics demon
 
 `python scripts/06_validate_public_demo.py --root .` performs checks that do not require MediaPipe or model downloads. It verifies that required public files are present, documentation contains key cautionary language, the notebook JSON is parseable, and the static preview CSV files contain the expected demo columns.
 
-This validator is not a replacement for running the full MediaPipe workflow. It is a public-release guardrail for documentation and static demo assets.
+This validator is not a replacement for running the full MediaPipe workflow. It checks repository structure, documentation safeguards, environment pins, notebook structure, and static demo tables.
 
 The GitHub Actions workflow installs the locked environment and runs the complete six-script synthetic demonstration before applying this lightweight validation. This end-to-end check does not use or expose participant data.
 
-## Review limitations to report
+## Limitations to report
 
-When publishing or submitting this repository, report the following limitations clearly:
+When applying or describing this workflow, report the following limitations clearly:
 
 - RFMI features are study-defined relative image indices, not official MediaPipe medical measurements.
 - The public demo has one synthetic image only and cannot support clinical, diagnostic, or population-level claims.

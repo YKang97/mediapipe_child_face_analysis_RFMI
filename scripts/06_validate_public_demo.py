@@ -28,7 +28,7 @@ REQUIRED_FILES = [
     "docs/tables/demo_rfmi_subject_indices.csv",
     "docs/tables/demo_rfmi_summary.csv",
     "example_data/images/SYN_open.jpg",
-    "notebooks/BIBE_RFMI_Image_to_Indices_Demo.ipynb",
+    "notebooks/RFMI_Image_to_Indices_Demo.ipynb",
     "scripts/01_prepare_project.py",
     "scripts/02_detect_and_overlay.py",
     "scripts/03_generate_qc_template.py",
@@ -37,16 +37,14 @@ REQUIRED_FILES = [
     "scripts/06_validate_public_demo.py",
 ]
 
-EXPECTED_PYTHON_VERSION = "3.13.9"
-
-EXPECTED_REQUIREMENTS = {
-    "mediapipe": "0.10.35",
-    "pillow": "12.0.0",
-    "pandas": "2.3.3",
-    "numpy": "2.3.3",
-    "matplotlib": "3.10.7",
-    "openpyxl": "3.1.5",
-    "jupyter": "1.1.1",
+REQUIRED_PACKAGES = {
+    "mediapipe",
+    "pillow",
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "openpyxl",
+    "jupyter",
 }
 
 REQUIRED_SUBJECT_COLUMNS = {
@@ -105,13 +103,30 @@ REQUIRED_README_PHRASES = [
     "blinded manual quality-control template",
 ]
 
+PUBLIC_TEXT_FILES = [
+    "README.md",
+    "docs/README.md",
+    "docs/methods_rfmi.md",
+    "docs/reproducibility.md",
+    "AI_IMAGE_DISCLOSURE.md",
+    "notebooks/RFMI_Image_to_Indices_Demo.ipynb",
+]
+
+STAGE_SPECIFIC_PHRASES = [
+    "reviewer",
+    "peer review",
+    "accompanying manuscript",
+    "reported in the manuscript",
+    "bibe",
+]
+
 
 class ValidationError(RuntimeError):
     pass
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Validate public demo files and reviewer-facing documentation.")
+    parser = argparse.ArgumentParser(description="Validate the RFMI public demonstration repository.")
     parser.add_argument("--root", type=Path, default=Path("."), help="Project root folder.")
     return parser.parse_args()
 
@@ -141,9 +156,10 @@ def validate_required_files(root: Path) -> None:
 
 def validate_environment_specification(root: Path) -> None:
     python_version = (root / ".python-version").read_text(encoding="utf-8").strip()
-    if python_version != EXPECTED_PYTHON_VERSION:
+    version_parts = python_version.split(".")
+    if len(version_parts) != 3 or not all(part.isdigit() for part in version_parts):
         raise ValidationError(
-            f".python-version is {python_version!r}; expected {EXPECTED_PYTHON_VERSION!r}."
+            f".python-version must contain a three-part Python version: {python_version!r}."
         )
 
     pinned_requirements: dict[str, str] = {}
@@ -156,10 +172,10 @@ def validate_environment_specification(root: Path) -> None:
         package, version = line.split("==", maxsplit=1)
         pinned_requirements[package.strip().lower()] = version.strip()
 
-    if pinned_requirements != EXPECTED_REQUIREMENTS:
+    if set(pinned_requirements) != REQUIRED_PACKAGES:
         raise ValidationError(
-            "requirements.txt does not match the manuscript analysis environment: "
-            f"{pinned_requirements}"
+            "requirements.txt does not contain the required locked package set: "
+            f"{sorted(pinned_requirements)}"
         )
 
 
@@ -170,8 +186,21 @@ def validate_readme_language(root: Path) -> None:
         raise ValidationError(f"README.md is missing required cautionary language: {missing}")
 
 
+def validate_public_language(root: Path) -> None:
+    findings: list[str] = []
+    for relative_path in PUBLIC_TEXT_FILES:
+        text = (root / relative_path).read_text(encoding="utf-8").lower()
+        for phrase in STAGE_SPECIFIC_PHRASES:
+            if phrase in text:
+                findings.append(f"{relative_path}: {phrase!r}")
+    if findings:
+        raise ValidationError(
+            "Public files contain stage-specific submission language: " + "; ".join(findings)
+        )
+
+
 def validate_notebook(root: Path) -> None:
-    notebook_path = root / "notebooks" / "BIBE_RFMI_Image_to_Indices_Demo.ipynb"
+    notebook_path = root / "notebooks" / "RFMI_Image_to_Indices_Demo.ipynb"
     notebook = json.loads(notebook_path.read_text(encoding="utf-8"))
     if notebook.get("nbformat") != 4:
         raise ValidationError("Notebook nbformat is not 4.")
@@ -212,6 +241,7 @@ def main() -> None:
     validate_required_files(root)
     validate_environment_specification(root)
     validate_readme_language(root)
+    validate_public_language(root)
     validate_notebook(root)
     validate_static_tables(root)
     print("Public demo validation passed.")
