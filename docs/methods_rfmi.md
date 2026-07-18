@@ -11,6 +11,8 @@ This document defines the relative facial morphology indices (RFMI) used in the 
 
 ## Coordinate source
 
+Before detection, `scripts/01_prepare_project.py` applies embedded EXIF orientation, converts the input to RGB, and saves a JPEG copy at quality 95 in `data/images_analysis/`. All downstream coordinates and RFMI values are derived from this prepared analysis copy.
+
 `scripts/02_detect_and_overlay.py` runs MediaPipe Face Landmarker in image mode with one face requested. For each detected face, it exports normalized coordinates and pixel coordinates for every landmark row in `outputs_landmarks/landmarks_raw.csv`.
 
 | Exported field | Meaning |
@@ -68,7 +70,7 @@ These are MediaPipe model outputs. In this repository they are included as descr
 
 ## Visual quality control
 
-`scripts/03_generate_qc_template.py` creates a blank blinded manual quality-control template from the generated overlay paths. The template is intended to help researchers review whether landmark overlays align with visible facial regions before using RFMI values in a real study dataset.
+`scripts/03_generate_qc_template.py` creates a blank manual quality-control template from the generated overlay paths. The template is intended to support blinded assessment of whether landmark overlays align with visible facial regions before RFMI values are used in a real study dataset. The template does not implement blinding automatically. Studies should mask identifiers, randomize image order, and keep rater files separate according to a prespecified protocol.
 
 The public demo does not contain real human ratings. In real child image studies, QC scoring should be performed under the study ethics approval and data-protection plan.
 

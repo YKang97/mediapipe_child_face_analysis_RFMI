@@ -19,9 +19,9 @@ This folder contains static demonstration outputs generated from the synthetic o
 
 ## Tables
 
-- `tables/demo_qc_template.csv`: blank blinded manual quality-control template generated from the synthetic example overlays.
+- `tables/demo_qc_template.csv`: blank manual quality-control template generated from the synthetic example overlays for use in a prespecified blinded assessment procedure.
 - `tables/demo_qc_score_codebook.csv`: scoring guide for the public QC template.
 - `tables/demo_rfmi_subject_indices.csv`: one-row subject-level RFMI output from the synthetic example.
 - `tables/demo_rfmi_summary.csv`: descriptive RFMI summary table from the synthetic example.
 
-These files are demonstration outputs only. They are not study data. Because they come from one synthetic image, summary statistics demonstrate table structure only and should not be interpreted as research estimates.
+These files are demonstration outputs only. They are not study data. Because they come from one synthetic image, summary statistics demonstrate table structure only and should not be interpreted as research estimates. Sample standard deviations are reported as `NA` for `n = 1`.

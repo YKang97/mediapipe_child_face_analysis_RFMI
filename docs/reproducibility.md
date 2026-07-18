@@ -6,7 +6,7 @@ This checklist summarizes what can be reproduced from the repository and what is
 
 Included:
 
-- source code for preparing the demo image, running MediaPipe Face Landmarker, drawing coordinate-based overlays, creating a blank blinded quality-control template, computing RFMI variables, and creating summary tables;
+- source code for preparing the demo image, running MediaPipe Face Landmarker, drawing coordinate-based overlays, creating a blank manual quality-control template for blinded assessment, computing RFMI variables, and creating summary tables;
 - one synthetic, AI-generated open-eye child face image for demonstration;
 - static preview figures and CSV tables generated from the synthetic image;
 - method documentation, citation metadata, license, and AI-image disclosure files.
@@ -22,13 +22,13 @@ Excluded:
 
 ## Recommended Python environment
 
-The public demonstration workflow was tested with the following locked environment:
+The public demonstration workflow was tested with the following pinned direct-dependency environment:
 
 | Component | Version |
 |---|---:|
 | Python | 3.13.9 |
 | MediaPipe | 0.10.35 |
-| Pillow | 12.0.0 |
+| Pillow | 12.3.0 |
 | pandas | 2.3.3 |
 | NumPy | 2.3.3 |
 | Matplotlib | 3.10.7 |
@@ -53,7 +53,9 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-The `.python-version` and `requirements.txt` files are the authoritative environment specification for this repository. A run with substituted package versions should be documented as a different environment rather than treated as identical.
+The `.python-version` and `requirements.txt` files are the authoritative specification for Python and the directly installed packages in this repository. Their versions are pinned exactly; transitive dependencies are resolved by `pip` during installation. A run with substituted direct-dependency versions should be documented as a different environment rather than treated as identical.
+
+The preparation step applies embedded EXIF orientation, converts the source image to RGB, and saves a JPEG copy at quality 95 in `data/images_analysis/`. Detection and RFMI calculation use this prepared copy. The source image remains unchanged.
 
 ## Linux system dependencies
 
@@ -108,14 +110,14 @@ The main generated outputs are intentionally ignored by Git and should appear af
 | `outputs_overlay/full_face/` | Full-face coordinate overlay images. |
 | `outputs_overlay/eye_zoom/` | Eye-region coordinate overlay images. |
 | `outputs_overlay/rfmi_lines/` | RFMI distance-line overlay images. |
-| `outputs_qc/qc_template.csv` | Blank blinded manual QC template generated from overlay paths. |
+| `outputs_qc/qc_template.csv` | Blank manual QC template generated from overlay paths for use in a prespecified blinded assessment procedure. |
 | `outputs_qc/qc_score_codebook.csv` | Score definitions for the public QC template. |
 | `outputs_features/rfmi_image_level.csv` | Image-level RFMI outputs. |
 | `outputs_features/rfmi_subject_level.csv` | Subject-level RFMI outputs. |
 | `outputs_stats/tables/rfmi_subject_indices.csv` | Public-format subject-level RFMI table. |
 | `outputs_stats/tables/rfmi_summary.csv` | Descriptive demo summary table. |
 
-Because the public repository uses one synthetic image, summary statistics demonstrate table structure only and are not study estimates.
+Because the public repository uses one synthetic image, summary statistics demonstrate table structure only and are not study estimates. Sample standard deviations are reported as `NA` for `n = 1` because they are not estimable from a single observation.
 
 ## Lightweight repository validation
 
@@ -123,7 +125,7 @@ Because the public repository uses one synthetic image, summary statistics demon
 
 This validator is not a replacement for running the full MediaPipe workflow. It checks repository structure, documentation safeguards, environment pins, notebook structure, and static demo tables.
 
-The GitHub Actions workflow installs the locked environment and runs the complete six-script synthetic demonstration before applying this lightweight validation. This end-to-end check does not use or expose participant data.
+The GitHub Actions workflow installs the pinned direct dependencies and runs the complete six-script synthetic demonstration before applying this lightweight validation. This end-to-end check does not use or expose participant data.
 
 ## Limitations to report
 

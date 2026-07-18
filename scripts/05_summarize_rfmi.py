@@ -30,7 +30,8 @@ def summarize_metric(series: pd.Series) -> dict:
     if values.empty:
         return {"n": 0, "mean": "", "sd": "", "median": "", "min": "", "max": "", "mean_sd": ""}
     mean = values.mean()
-    sd = values.std(ddof=1) if len(values) > 1 else 0.0
+    sd = values.std(ddof=1) if len(values) > 1 else float("nan")
+    mean_sd = f"{mean:.3f} +/- {sd:.3f}" if len(values) > 1 else f"{mean:.3f} +/- NA"
     return {
         "n": int(values.count()),
         "mean": mean,
@@ -38,7 +39,7 @@ def summarize_metric(series: pd.Series) -> dict:
         "median": values.median(),
         "min": values.min(),
         "max": values.max(),
-        "mean_sd": f"{mean:.3f} +/- {sd:.3f}",
+        "mean_sd": mean_sd,
     }
 
 

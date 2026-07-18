@@ -39,7 +39,9 @@ QC_DIMENSIONS = [
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate a blinded manual quality-control template for RFMI overlays.")
+    parser = argparse.ArgumentParser(
+        description="Generate a manual quality-control template for blinded assessment of RFMI overlays."
+    )
     parser.add_argument("--root", type=Path, default=Path("."), help="Project root folder.")
     return parser.parse_args()
 

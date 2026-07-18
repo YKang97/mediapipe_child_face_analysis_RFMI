@@ -81,7 +81,8 @@ def ensure_model(root: Path, model_source: Path | None, skip_model: bool, force:
         return model_path
 
     print(f"Downloading MediaPipe Face Landmarker model to {model_path}")
-    urllib.request.urlretrieve(MODEL_URL, model_path)
+    # The source is a fixed HTTPS URL, and the downloaded file is verified below.
+    urllib.request.urlretrieve(MODEL_URL, model_path)  # nosec B310
     verify_model_hash(model_path)
     return model_path
 

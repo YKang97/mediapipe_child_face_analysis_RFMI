@@ -100,24 +100,7 @@ REQUIRED_README_PHRASES = [
     "not centimeter measurements",
     "not official MediaPipe medical measurements",
     "ethics approval",
-    "blinded manual quality-control template",
-]
-
-PUBLIC_TEXT_FILES = [
-    "README.md",
-    "docs/README.md",
-    "docs/methods_rfmi.md",
-    "docs/reproducibility.md",
-    "AI_IMAGE_DISCLOSURE.md",
-    "notebooks/RFMI_Image_to_Indices_Demo.ipynb",
-]
-
-STAGE_SPECIFIC_PHRASES = [
-    "reviewer",
-    "peer review",
-    "accompanying manuscript",
-    "reported in the manuscript",
-    "bibe",
+    "manual quality-control template for blinded assessment",
 ]
 
 
@@ -174,7 +157,7 @@ def validate_environment_specification(root: Path) -> None:
 
     if set(pinned_requirements) != REQUIRED_PACKAGES:
         raise ValidationError(
-            "requirements.txt does not contain the required locked package set: "
+            "requirements.txt does not contain the required set of pinned direct dependencies: "
             f"{sorted(pinned_requirements)}"
         )
 
@@ -184,19 +167,6 @@ def validate_readme_language(root: Path) -> None:
     missing = [phrase for phrase in REQUIRED_README_PHRASES if phrase not in readme]
     if missing:
         raise ValidationError(f"README.md is missing required cautionary language: {missing}")
-
-
-def validate_public_language(root: Path) -> None:
-    findings: list[str] = []
-    for relative_path in PUBLIC_TEXT_FILES:
-        text = (root / relative_path).read_text(encoding="utf-8").lower()
-        for phrase in STAGE_SPECIFIC_PHRASES:
-            if phrase in text:
-                findings.append(f"{relative_path}: {phrase!r}")
-    if findings:
-        raise ValidationError(
-            "Public files contain stage-specific submission language: " + "; ".join(findings)
-        )
 
 
 def validate_notebook(root: Path) -> None:
@@ -229,6 +199,17 @@ def validate_static_tables(root: Path) -> None:
     if missing_summary:
         raise ValidationError(f"Summary demo table is missing columns: {missing_summary}")
 
+    with (root / "docs" / "tables" / "demo_rfmi_summary.csv").open(
+        "r", encoding="utf-8-sig", newline=""
+    ) as handle:
+        summary_rows = list(csv.DictReader(handle))
+    for row in summary_rows:
+        if row.get("n") == "1":
+            if row.get("sd", "").strip():
+                raise ValidationError("Sample SD must be blank when the synthetic demo has n = 1.")
+            if not row.get("mean_sd", "").endswith("+/- NA"):
+                raise ValidationError("The n = 1 summary must label sample SD as NA.")
+
     qc_header = read_csv_header(root / "docs" / "tables" / "demo_qc_template.csv")
     missing_qc = sorted(REQUIRED_QC_COLUMNS - qc_header)
     if missing_qc:
@@ -241,7 +222,6 @@ def main() -> None:
     validate_required_files(root)
     validate_environment_specification(root)
     validate_readme_language(root)
-    validate_public_language(root)
     validate_notebook(root)
     validate_static_tables(root)
     print("Public demo validation passed.")

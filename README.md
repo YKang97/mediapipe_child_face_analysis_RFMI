@@ -2,7 +2,7 @@
 
 This repository provides an executable demonstration of a relative facial morphology index (RFMI) extraction framework for distance-uncalibrated, open-eye frontal child facial photographs.
 
-The workflow converts an input image into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, a blank blinded manual quality-control template, study-defined RFMI variables, and descriptive output tables. The included example uses one synthetic, AI-generated image. No real child participant photographs, participant metadata, or human QC ratings are included.
+The workflow converts an input image into MediaPipe Face Landmarker coordinates, coordinate-based overlay figures, a blank manual quality-control template for blinded assessment, study-defined RFMI variables, and descriptive output tables. The included example uses one synthetic, AI-generated image. No real child participant photographs, participant metadata, or human QC ratings are included.
 
 ## Scope
 
@@ -24,11 +24,13 @@ RFMI variables are within-image proportions. They are not centimeter measurement
 | 1 | Verify the runtime and prepare the synthetic input | Image manifest and fixed model file |
 | 2 | Run MediaPipe Face Landmarker | Landmark coordinates, eye-state auxiliary scores, and detection log |
 | 3 | Draw coordinate-based overlays | Full-face, eye-region, and RFMI reference-line figures |
-| 4 | Create blank blinded QC materials | QC template and scoring codebook |
+| 4 | Create blank manual QC materials | QC template and scoring codebook |
 | 5 | Calculate RFMI variables | Image-level and subject-level tables |
 | 6 | Create descriptive outputs | RFMI subject table and summary table |
 
 All points and lines in the overlay figures are generated from exported MediaPipe landmark coordinates; no landmarks are manually placed.
+
+During preparation, the input image is corrected using its embedded EXIF orientation, converted to RGB, and saved as a JPEG at quality 95 in the analysis directory. Detection and RFMI calculation use this prepared copy rather than the original source file.
 
 ## Example Input and Outputs
 
@@ -56,7 +58,7 @@ All points and lines in the overlay figures are generated from exported MediaPip
 
 ![RFMI summary table preview](docs/figures/demo_rfmi_summary_table.png)
 
-Machine-readable previews are available in [`docs/tables/`](docs/tables/). Because all previews come from one synthetic image, they demonstrate output structure only and are not research estimates.
+Machine-readable previews are available in [`docs/tables/`](docs/tables/). Because all previews come from one synthetic image, they demonstrate output structure only and are not research estimates. For `n = 1`, the sample standard deviation is reported as `NA` because it cannot be estimated from one observation.
 
 ## Repository Contents
 
@@ -142,7 +144,7 @@ All geometric RFMI values are computed from MediaPipe landmark coordinates. The 
 
 ## Quality Control
 
-The repository creates a blank QC template linked to the generated overlays. Researchers can use it to record whether landmarks align with visible facial regions before including RFMI values in a study dataset.
+The repository creates a blank manual QC template linked to the generated overlays. Researchers can use it to record whether landmarks align with visible facial regions before including RFMI values in a study dataset. The template does not implement blinding by itself; studies should mask identifiers, randomize review order, and manage separate rater files according to a prespecified protocol.
 
 The synthetic demonstration does not contain completed ratings and does not automatically filter RFMI output by QC score. Studies using real images should prespecify rater training, scoring rules, disagreement resolution, and inclusion criteria under the applicable ethics and data-protection plan.
 
